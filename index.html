@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WeatherZ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="weather">Weather App</div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Enter city name">
+                <button onclick="getWeather()">Search</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-div">
+
+        <div id="currentWeather"></div>
+
+        <h1 id="forecastTitle" style="display:none;">3-Days Forecast</h1>
+        <div id="forecastContainer" style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap;"></div>
+
+        <div class="container-default">
+            <h2>Current Weather across major cities</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>Wind Speed</th>
+                    </tr>
+                </thead>
+                <tbody id="majorCitiesTable"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+
+        const API_KEY = "5681555b3ddb46be902105138251911";
+        const majorCities = ["Mumbai", "New Delhi", "Bangalore", "Chennai", "Kolkata"];
+
+        async function getWeather() {
+
+            const city = document.getElementById("search-input").value.trim();
+            if (!city) return;
+
+            const response = await fetch(
+                `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7`
+            );
+
+            const data = await response.json();
+
+            if (data.error) {
+                document.getElementById("currentWeather").innerHTML = "Invalid city name!";
+                return;
+            }
+
+            const c = data.current;
+
+            document.getElementById("currentWeather").innerHTML = `
+        <h1 class='city'>${data.location.name}</h1>
+        <div class='weather-container'>
+
+            <div class='card'>
+                <div class='card-head'>Temperature</div>
+                <h1 class='degree'>${c.temp_c} °C</h1>
+                <img src="https:${c.condition.icon}">
+                <ul>
+                    <li>Temperature: ${c.temp_c} °C</li>
+                    <li>Temp (F): ${c.temp_f} °F</li>
+                    <li>Cloud: ${c.cloud} %</li>
+                </ul>
+            </div>
+
+            <div class='card'>
+                <div class='card-head'>Humidity</div>
+                <h1 class='degree'>${c.humidity} %</h1>
+                <img src="https:${c.condition.icon}">
+                <ul>
+                    <li>Humidity: ${c.humidity} %</li>
+                    <li>Feels Like: ${c.feelslike_c} °C</li>
+                    <li>Wind Degree: ${c.wind_degree}</li>
+                </ul>
+            </div>
+
+            <div class='card'>
+                <div class='card-head'>Wind Speed</div>
+                <h1 class='degree'>${c.wind_kph} km/h</h1>
+                <img src="https:${c.condition.icon}">
+                <ul>
+                    <li>Wind Speed: ${c.wind_kph} km/h</li>
+                    <li>Gust Speed: ${c.gust_kph} km/h</li>
+                    <li>Wind Direction: ${c.wind_dir}</li>
+                </ul>
+            </div>
+
+        </div>
+    `;
+
+            // Forecast
+            document.getElementById("forecastTitle").style.display = "block";
+            const forecastDiv = document.getElementById("forecastContainer");
+            forecastDiv.innerHTML = "";
+
+            data.forecast.forecastday.forEach(day => {
+                forecastDiv.innerHTML += `
+            <div class='fore-container'>
+                <div class='forecast'>
+                    <h3>${day.day.maxtemp_c} °C</h3>
+                    <img src="https:${day.day.condition.icon}">
+                    <p>${day.date}</p>
+                </div>
+            </div>
+        `;
+            });
+        }
+
+        // Major cities
+        async function loadMajorCities() {
+
+            const table = document.getElementById("majorCitiesTable");
+
+            for (let city of majorCities) {
+
+                const response = await fetch(
+                    `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
+                );
+
+                const data = await response.json();
+
+                if (!data.error) {
+                    table.innerHTML += `
+                <tr>
+                    <td>${city}</td>
+                    <td>${data.current.temp_c} °C</td>
+                    <td>${data.current.humidity} %</td>
+                    <td>${data.current.wind_kph} km/h</td>
+                </tr>
+            `;
+                }
+            }
+        }
+
+        loadMajorCities();
+
+    </script>
+
+</body>
+
+
+</html>
+
