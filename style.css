@@ -145,7 +145,7 @@ tr {
     min-height: 280px;
     margin: 10px;
     background-color: #ffffff;
-    border-radius: 15px;
+    border-radius: 22px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
     border: 2px solid #007bff;
@@ -167,7 +167,7 @@ tr {
     background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     display: flex;
     justify-content: center;
-    border-radius: 13px 13px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .degree {
@@ -197,20 +197,24 @@ ul li {
 
 .forecast {
     text-align: center;
-    margin-top: 40px;
-    gap: 30px;
 }
 
 .fore-container {
     background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 20px;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 8px;
     margin-top: 10px;
     width: max-content;
-    padding: 15px 20px;
+    padding: 12px 20px;
     color: white;
+}
+
+.fore-container img {
+    width: 50px;
+    height: 50px;
 }
 
 .forecast-row {
