@@ -263,13 +263,38 @@ ul li {
         padding: 8px 14px;
     }
 
+    .weather-container {
+        gap: 10px;
+    }
+
     .card {
-        width: 100%;
-        margin: 8px 0;
+        flex: 1 1 calc(50% - 10px);
+        width: auto;
+        min-height: 0;
+        margin: 0;
+    }
+
+    .card-head {
+        font-size: 14px;
+        padding: 10px;
     }
 
     .degree {
-        font-size: 26px;
+        font-size: 20px;
+        margin-top: 8px;
+    }
+
+    .location-info img,
+    .card img {
+        width: 50px;
+        height: 50px;
+        margin: 8px 0;
+    }
+
+    .card ul {
+        font-size: 11px;
+        line-height: 18px;
+        margin: 10px 0 10px 0;
     }
 
     .fore-container {
@@ -280,5 +305,32 @@ ul li {
     table td {
         padding: 6px 4px;
         font-size: 13px;
+    }
+}
+
+/* Genuinely tiny screens: 2 columns is too cramped, fall back to 1 */
+@media (max-width: 380px) {
+
+    .card {
+        flex: 1 1 100%;
+    }
+
+    .card-head {
+        font-size: 16px;
+    }
+
+    .degree {
+        font-size: 24px;
+    }
+
+    .location-info img,
+    .card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card ul {
+        font-size: 13px;
+        line-height: 20px;
     }
 }
