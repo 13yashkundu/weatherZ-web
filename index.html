@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherZ</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -29,17 +30,19 @@
         <div class="container-default">
             <h2>Current Weather across major cities</h2>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>City</th>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>Wind Speed</th>
-                    </tr>
-                </thead>
-                <tbody id="majorCitiesTable"></tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>City</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>Wind Speed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="majorCitiesTable"></tbody>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -159,4 +162,3 @@
 
 
 </html>
-
