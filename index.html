@@ -115,11 +115,9 @@
             data.forecast.forecastday.forEach(day => {
                 forecastDiv.innerHTML += `
             <div class='fore-container'>
-                <div class='forecast'>
-                    <h3>${day.day.maxtemp_c} °C</h3>
-                    <img src="https:${day.day.condition.icon}">
-                    <p>${day.date}</p>
-                </div>
+                <h3>${day.day.maxtemp_c} °C</h3>
+                <img src="https:${day.day.condition.icon}">
+                <p>${day.date}</p>
             </div>
         `;
             });
