@@ -213,6 +213,13 @@ ul li {
     color: white;
 }
 
+.forecast-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
 /* ===== Mobile fixes ===== */
 
 @media (max-width: 768px) {
@@ -297,8 +304,32 @@ ul li {
         margin: 10px 0 10px 0;
     }
 
+    .forecast-row {
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+
     .fore-container {
-        width: 100%;
+        width: auto;
+        flex: 1 1 0;
+        min-width: 0;
+        gap: 8px;
+        padding: 8px 6px;
+    }
+
+    .fore-container h3 {
+        font-size: 14px;
+        margin: 4px 0;
+    }
+
+    .fore-container img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .fore-container p {
+        font-size: 10px;
+        margin: 2px 0;
     }
 
     table th,
@@ -332,5 +363,27 @@ ul li {
     .card ul {
         font-size: 13px;
         line-height: 20px;
+    }
+
+    .forecast-row {
+        gap: 5px;
+    }
+
+    .fore-container {
+        padding: 6px 4px;
+        gap: 5px;
+    }
+
+    .fore-container img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .fore-container h3 {
+        font-size: 12px;
+    }
+
+    .fore-container p {
+        font-size: 9px;
     }
 }
