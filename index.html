@@ -14,7 +14,8 @@
         <div class="nav-container">
             <div class="weather">WeatherZ</div>
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Enter city name">
+                <input type="text" id="search-input" placeholder="Enter city name"
+                    onkeypress="if(event.key === 'Enter') getWeather()">
                 <button onclick="getWeather()">Search</button>
             </div>
         </div>
