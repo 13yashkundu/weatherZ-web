@@ -11,6 +11,8 @@
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌡️</text></svg>">
 </head>
 
 <body>
@@ -22,7 +24,7 @@
                 <label for="search-input" class="visually-hidden">City name</label>
                 <input type="text" id="search-input" placeholder="Enter city name"
                     onkeypress="if(event.key === 'Enter') getWeather()">
-                <button onclick="getWeather()">Search</button>
+                <button id="search-btn" onclick="getWeather()">Search</button>
             </div>
         </div>
     </header>
@@ -55,21 +57,28 @@
 
     </main>
 
+    <footer class="site-footer">
+        <p>Live data via WeatherAPI.com</p>
+    </footer>
+
     <script>
 
         const API_KEY = "5681555b3ddb46be902105138251911";
         const majorCities = ["Mumbai", "New Delhi", "Bangalore", "Chennai", "Kolkata"];
 
-        async function getWeather() {
+        async function getWeather(defaultCity) {
 
-            const city = document.getElementById("search-input").value.trim();
+            const city = defaultCity || document.getElementById("search-input").value.trim();
             if (!city) return;
 
             const currentDiv = document.getElementById("currentWeather");
             const forecastTitle = document.getElementById("forecastTitle");
             const forecastDiv = document.getElementById("forecastContainer");
+            const searchBtn = document.getElementById("search-btn");
 
             currentDiv.innerHTML = `<p class="loading-msg">Fetching weather data…</p>`;
+            searchBtn.disabled = true;
+            searchBtn.textContent = "Searching…";
 
             try {
                 const response = await fetch(
@@ -86,6 +95,7 @@
                 }
 
                 const c = data.current;
+                const updatedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                 currentDiv.innerHTML = `
         <div class="current-panel">
@@ -118,6 +128,7 @@
                     <span class="metric-value">${c.wind_dir}</span>
                 </div>
             </div>
+            <p class="updated-stamp">Last updated ${updatedAt}</p>
         </div>
     `;
 
@@ -140,6 +151,9 @@
                 currentDiv.innerHTML = `<p class="error-msg">Couldn't reach the weather service. Check your connection and try again.</p>`;
                 forecastTitle.style.display = "none";
                 forecastDiv.innerHTML = "";
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.textContent = "Search";
             }
         }
 
@@ -173,6 +187,7 @@
         }
 
         loadMajorCities();
+        getWeather("New Delhi");
 
     </script>
 
