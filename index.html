@@ -129,23 +129,31 @@
                         <span class="hl-divider">·</span>
                         <span class="hl-low">Today's Low: ${Math.round(today.mintemp_c)}°</span>
                     </p>
-                    <p class="feels-line">Feels Like ${Math.round(c.feelslike_c)}°C</p>
                 </div>
             </div>
             <div class="metric-row">
                 <div class="metric">
+                    <span class="metric-icon">🥵</span>
+                    <span class="metric-label">Feels Like</span>
+                    <span class="metric-value">${Math.round(c.feelslike_c)}°</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-icon">💧</span>
                     <span class="metric-label">Humidity</span>
                     <span class="metric-value">${c.humidity}%</span>
                 </div>
                 <div class="metric">
+                    <span class="metric-icon">🌬️</span>
                     <span class="metric-label">Wind</span>
                     <span class="metric-value">${c.wind_kph} km/h</span>
                 </div>
                 <div class="metric">
+                    <span class="metric-icon">🧭</span>
                     <span class="metric-label">Wind Dir</span>
                     <span class="metric-value">${c.wind_dir}</span>
                 </div>
                 <div class="metric">
+                    <span class="metric-icon">☁️</span>
                     <span class="metric-label">Cloud</span>
                     <span class="metric-value">${c.cloud}%</span>
                 </div>
