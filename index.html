@@ -97,24 +97,27 @@
                 const c = data.current;
                 const updatedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+                const today = data.forecast.forecastday[0].day;
+
                 currentDiv.innerHTML = `
         <div class="current-panel">
-            <div class="current-top">
-                <div class="current-location">
-                    <span class="eyebrow">Current Conditions</span>
-                    <h1 class="city-name">${data.location.name}</h1>
-                    <p class="condition-text">${c.condition.text}</p>
-                </div>
-                <div class="current-readout">
-                    <img src="https:${c.condition.icon}" alt="${c.condition.text}">
-                    <span class="temp-readout">${Math.round(c.temp_c)}°</span>
+            <div class="current-hero">
+                <div class="current-left">
+                    <p class="city-name"><span class="pin">📍</span>${data.location.name}</p>
+                    <span class="temp-readout">${Math.round(c.temp_c)}°C</span>
+                    <p class="condition-text">
+                        <img src="https:${c.condition.icon}" alt="${c.condition.text}" class="inline-icon">
+                        ${c.condition.text}
+                    </p>
+                    <p class="hl-row">
+                        <span class="hl-high">H: ${Math.round(today.maxtemp_c)}°</span>
+                        <span class="hl-divider">·</span>
+                        <span class="hl-low">L: ${Math.round(today.mintemp_c)}°</span>
+                    </p>
+                    <p class="feels-line">Feels Like ${Math.round(c.feelslike_c)}°C</p>
                 </div>
             </div>
             <div class="metric-row">
-                <div class="metric">
-                    <span class="metric-label">Feels Like</span>
-                    <span class="metric-value">${Math.round(c.feelslike_c)}°C</span>
-                </div>
                 <div class="metric">
                     <span class="metric-label">Humidity</span>
                     <span class="metric-value">${c.humidity}%</span>
@@ -123,10 +126,14 @@
                     <span class="metric-label">Wind</span>
                     <span class="metric-value">${c.wind_kph} km/h</span>
                 </div>
-                <!-- <div class="metric">
+                <div class="metric">
                     <span class="metric-label">Wind Dir</span>
                     <span class="metric-value">${c.wind_dir}</span>
-                </div> -->
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Cloud</span>
+                    <span class="metric-value">${c.cloud}%</span>
+                </div>
             </div>
             <p class="updated-stamp">Last updated ${updatedAt}</p>
         </div>
