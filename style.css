@@ -22,12 +22,51 @@ body {
     background: radial-gradient(circle at 50% -10%, #1b2848 0%, #0b1220 55%, #060a14 100%);
     min-height: 100vh;
     color: var(--text-primary);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background orbs — give backdrop-filter something to blur */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: rgba(79, 182, 232, 0.12);
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: rgba(244, 169, 59, 0.10);
+    bottom: 100px;
+    right: -80px;
+}
+
+/* Ensure content sits above orbs */
+.topbar,
+.main-div,
+.site-footer {
+    position: relative;
+    z-index: 1;
 }
 
 /* Top bar */
 .topbar {
-    background: var(--bg-panel);
-    border-bottom: 2px solid var(--accent-amber);
+    background: rgba(20, 27, 46, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(244, 169, 59, 0.5);
 }
 
 .topbar-inner {
@@ -163,8 +202,10 @@ body {
 
 /* Current weather panel */
 .current-panel {
-    background: var(--bg-panel);
-    border: 1px solid var(--hairline);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 28px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -300,8 +341,10 @@ body {
 }
 
 .fore-container {
-    background: var(--bg-panel);
-    border: 1px solid var(--hairline);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
     padding: 16px 10px;
     display: flex;
@@ -336,8 +379,10 @@ body {
 /* Major cities table */
 .table-wrapper {
     overflow-x: auto;
-    background: var(--bg-panel);
-    border: 1px solid var(--hairline);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 6px 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
