@@ -24,9 +24,31 @@ body {
     color: var(--text-primary);
     position: relative;
     overflow-x: hidden;
+    transition: background 1.2s ease;
 }
 
-/* Background orbs — give backdrop-filter something to blur */
+/* ── Weather themes ── */
+body.theme-sunny {
+    background: radial-gradient(circle at 40% -10%, #7c2d12 0%, #1c0900 50%, #0a0400 100%);
+}
+
+body.theme-rain {
+    background: radial-gradient(circle at 50% -10%, #1e3a5f 0%, #0a1a2e 55%, #040c18 100%);
+}
+
+body.theme-snow {
+    background: radial-gradient(circle at 50% -10%, #1c2f45 0%, #0d1824 55%, #050b12 100%);
+}
+
+body.theme-night {
+    background: radial-gradient(circle at 30% 10%, #0e1538 0%, #050810 55%, #020407 100%);
+}
+
+body.theme-cloudy {
+    background: radial-gradient(circle at 50% -10%, #1b2848 0%, #0b1220 55%, #060a14 100%);
+}
+
+/* Background orbs — base */
 body::before,
 body::after {
     content: '';
@@ -35,6 +57,7 @@ body::after {
     filter: blur(80px);
     pointer-events: none;
     z-index: 0;
+    transition: background 1.2s ease;
 }
 
 body::before {
@@ -51,6 +74,83 @@ body::after {
     background: rgba(244, 169, 59, 0.10);
     bottom: 100px;
     right: -80px;
+}
+
+/* Orb overrides per theme */
+body.theme-sunny::before {
+    background: rgba(251, 146, 60, 0.20);
+}
+
+body.theme-sunny::after {
+    background: rgba(250, 204, 21, 0.15);
+}
+
+body.theme-rain::before {
+    background: rgba(56, 139, 208, 0.15);
+}
+
+body.theme-rain::after {
+    background: rgba(99, 155, 210, 0.10);
+}
+
+body.theme-snow::before {
+    background: rgba(186, 230, 253, 0.12);
+}
+
+body.theme-snow::after {
+    background: rgba(224, 242, 254, 0.08);
+}
+
+body.theme-night::before {
+    background: rgba(99, 102, 241, 0.10);
+}
+
+body.theme-night::after {
+    background: rgba(56, 72, 160, 0.08);
+}
+
+/* ── Rain & snow animation overlay ── */
+.weather-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.theme-rain .weather-bg {
+    background-image: repeating-linear-gradient(172deg,
+            transparent 0px,
+            transparent 5px,
+            rgba(147, 197, 253, 0.07) 5px,
+            rgba(147, 197, 253, 0.07) 6px);
+    background-size: 30px 150px;
+    animation: rainFall 0.5s linear infinite;
+}
+
+body.theme-snow .weather-bg {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: snowFall 4s linear infinite;
+}
+
+@keyframes rainFall {
+    from {
+        background-position: 0 -150px;
+    }
+
+    to {
+        background-position: 30px 0;
+    }
+}
+
+@keyframes snowFall {
+    from {
+        background-position: 0 -40px;
+    }
+
+    to {
+        background-position: 20px 0;
+    }
 }
 
 /* Ensure content sits above orbs */
