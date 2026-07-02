@@ -197,6 +197,39 @@ body.theme-snow .weather-bg {
     gap: 10px;
 }
 
+/* .search-wrapper holds input+button as one visual unit.
+   overflow: hidden clips the square inner corners to the wrapper's
+   own border-radius, so input/button just need border-radius: 0. */
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: var(--bg-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* :focus-within = "apply this style to the parent if ANY child inside
+   it currently has focus." Regular :focus only works on the element
+   itself, so it can't react to the child input being focused —
+   that's the only way to make the whole pill glow at once. */
+.search-wrapper:focus-within {
+    border-color: var(--accent-amber);
+    box-shadow: 0 0 0 3px rgba(244, 169, 59, 0.18);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -207,31 +240,24 @@ body.theme-snow .weather-bg {
 }
 
 .search-box input {
-    padding: 10px 16px;
+    padding: 10px 16px 10px 38px;
     font-size: 15px;
     font-family: var(--font-body);
-    background: var(--bg-deep);
+    background: transparent;
     color: var(--text-primary);
-    border: 1px solid var(--hairline);
-    border-radius: 6px;
+    border: none;
+    border-radius: 0;
     outline: none;
     min-width: 200px;
-    transition: border-color 0.2s ease;
 }
 
 .search-box input::placeholder {
     color: var(--text-muted);
 }
 
-.search-box input:focus {
-    border-color: var(--accent-amber);
-}
-
-.search-box input:focus-visible,
-.search-box button:focus-visible {
-    outline: 2px solid var(--accent-cool);
-    outline-offset: 2px;
-}
+/* Removed outline on focus-visible here — the wrapper's :focus-within
+   box-shadow is now the only focus indicator, otherwise you'd get
+   two competing outlines (double ring) at once. */
 
 .site-footer {
     text-align: center;
@@ -253,7 +279,7 @@ body.theme-snow .weather-bg {
     background: var(--accent-amber);
     color: #1a1304;
     border: none;
-    border-radius: 6px;
+    border-radius: 0;
     cursor: pointer;
     transition: filter 0.2s ease;
 }
@@ -579,6 +605,10 @@ table.board-table {
     }
 
     .search-box {
+        width: 100%;
+    }
+
+    .search-wrapper {
         width: 100%;
     }
 
