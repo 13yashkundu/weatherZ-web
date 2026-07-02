@@ -373,10 +373,10 @@ body.theme-snow .weather-bg {
 
 .temp-readout {
     font-family: var(--font-mono);
-    font-size: 72px;
+    font-size: 96px;
     font-weight: 700;
     color: var(--accent-amber);
-    letter-spacing: -3px;
+    letter-spacing: -4px;
     line-height: 1;
     margin: 4px 0;
 }
@@ -614,7 +614,7 @@ table.board-table {
     }
 
     .temp-readout {
-        font-size: 56px;
+        font-size: 76px;
     }
 
     .metric-row {
@@ -644,7 +644,7 @@ table.board-table {
     }
 
     .temp-readout {
-        font-size: 52px;
+        font-size: 68px;
     }
 
     .inline-icon {
