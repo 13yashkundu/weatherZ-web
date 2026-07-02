@@ -69,8 +69,7 @@
 
         const API_KEY = "5681555b3ddb46be902105138251911";
         const majorCities = ["Mumbai", "New Delhi", "Bangalore", "Chennai", "Kolkata"];
-
-        // Condition codes: https://www.weatherapi.com/docs/weather_conditions.json
+        
         function getWeatherTheme(code, isDay) {
             if (!isDay) return 'night';
             if (code === 1000) return 'sunny';
