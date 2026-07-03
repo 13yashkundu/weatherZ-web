@@ -315,16 +315,39 @@ body.theme-snow .weather-bg {
     margin: 0 0 14px;
 }
 
-.loading-msg,
 .error-msg {
     font-family: var(--font-body);
-    color: var(--text-muted);
+    color: #e8847a;
     padding: 30px 0;
     text-align: center;
 }
 
-.error-msg {
-    color: #e8847a;
+/* Fade sequence: swapWithFade() toggles this class before/after
+   swapping innerHTML. Duration here must match the 250ms in JS. */
+#currentWeather {
+    transition: opacity 0.25s ease;
+}
+
+#currentWeather.fade-out {
+    opacity: 0;
+}
+
+.skeleton-block {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.9;
+    }
 }
 
 /* Current weather panel */
@@ -402,6 +425,19 @@ body.theme-snow .weather-bg {
     height: 108px;
     flex-shrink: 0;
     filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+    animation: iconFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
 }
 
 .astro-row {
@@ -556,6 +592,11 @@ body.theme-snow .weather-bg {
     min-width: 0;
     max-width: 120px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.fore-container.fore-today {
+    border-color: var(--accent-amber);
+    box-shadow: 0 6px 16px rgba(244, 169, 59, 0.2);
 }
 
 .day-label {

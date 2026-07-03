@@ -93,6 +93,37 @@
             return labels[index] || '—';
         }
 
+        // Swaps an element's content with a fade-out -> replace -> fade-in
+        // sequence instead of an instant innerHTML swap. The 250ms timeout
+        // must match the CSS transition duration on .fade-out, otherwise the
+        // content gets replaced mid-fade and the effect looks broken.
+        function swapWithFade(el, html) {
+            return new Promise(resolve => {
+                el.classList.add('fade-out');
+                setTimeout(() => {
+                    el.innerHTML = html;
+                    el.classList.remove('fade-out');
+                    resolve();
+                }, 250);
+            });
+        }
+
+        const skeletonCard = `
+        <div class="current-panel">
+            <div class="current-hero">
+                <div class="current-left">
+                    <div class="skeleton-block" style="width:110px;height:12px;"></div>
+                    <div class="skeleton-block" style="width:170px;height:64px;margin-top:6px;"></div>
+                    <div class="skeleton-block" style="width:130px;height:14px;"></div>
+                </div>
+                <div class="skeleton-block" style="width:88px;height:88px;border-radius:50%;"></div>
+            </div>
+            <div class="metric-row">
+                ${'<div class="metric"><div class="skeleton-block" style="width:100%;height:44px;"></div></div>'.repeat(6)}
+            </div>
+        </div>
+    `;
+
         async function getWeather(defaultCity) {
 
             const city = defaultCity || document.getElementById("search-input").value.trim();
@@ -105,9 +136,9 @@
             const forecastDiv = document.getElementById("forecastContainer");
             const searchBtn = document.getElementById("search-btn");
 
-            currentDiv.innerHTML = `<p class="loading-msg">Fetching weather data…</p>`;
             searchBtn.disabled = true;
             searchBtn.textContent = "Searching…";
+            await swapWithFade(currentDiv, skeletonCard);
 
             try {
                 const response = await fetch(
@@ -117,7 +148,7 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    currentDiv.innerHTML = `<p class="error-msg">Invalid city name!</p>`;
+                    await swapWithFade(currentDiv, `<p class="error-msg">Invalid city name!</p>`);
                     highlightsTitle.style.display = "none";
                     highlightsDiv.innerHTML = "";
                     forecastTitle.style.display = "none";
@@ -133,7 +164,7 @@
 
                 const today = data.forecast.forecastday[0].day;
 
-                currentDiv.innerHTML = `
+                const currentCardHTML = `
         <div class="current-panel">
             <div class="current-hero">
                 <div class="current-left">
@@ -183,6 +214,7 @@
             <p class="updated-stamp">Last updated ${updatedAt}</p>
         </div>
     `;
+                await swapWithFade(currentDiv, currentCardHTML);
 
                 // Today's Highlights
                 highlightsTitle.style.display = "block";
@@ -224,10 +256,11 @@
                 forecastTitle.style.display = "block";
                 forecastDiv.innerHTML = "";
 
-                data.forecast.forecastday.forEach(day => {
+                data.forecast.forecastday.forEach((day, index) => {
                     const dayLabel = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+                    const todayClass = index === 0 ? ' fore-today' : '';
                     forecastDiv.innerHTML += `
-            <div class='fore-container'>
+            <div class='fore-container${todayClass}'>
                 <span class="day-label">${dayLabel}</span>
                 <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
                 <span class="fore-temp">${Math.round(day.day.maxtemp_c)}°</span>
@@ -237,7 +270,7 @@
                 });
 
             } catch (err) {
-                currentDiv.innerHTML = `<p class="error-msg">Couldn't reach the weather service. Check your connection and try again.</p>`;
+                await swapWithFade(currentDiv, `<p class="error-msg">Couldn't reach the weather service. Check your connection and try again.</p>`);
                 highlightsTitle.style.display = "none";
                 highlightsDiv.innerHTML = "";
                 forecastTitle.style.display = "none";
