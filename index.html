@@ -174,6 +174,11 @@
                     <span class="metric-label">Cloud</span>
                     <span class="metric-value">${c.cloud}%</span>
                 </div>
+                <div class="metric">
+                    <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 15a4 4 0 0 1-1-7.87A5 5 0 0 1 15.5 6a4.5 4.5 0 0 1 .5 9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 19l1.5-2.5M12 19l1.5-2.5M16 19l1.5-2.5" stroke-width="2" stroke-linecap="round"/></svg></span>
+                    <span class="metric-label">Rain</span>
+                    <span class="metric-value">${today.daily_chance_of_rain}%</span>
+                </div>
             </div>
             <p class="updated-stamp">Last updated ${updatedAt}</p>
         </div>
@@ -226,6 +231,7 @@
                 <span class="day-label">${dayLabel}</span>
                 <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
                 <span class="fore-temp">${Math.round(day.day.maxtemp_c)}°</span>
+                <span class="fore-rain"><svg viewBox="0 0 24 24"><path d="M12 2c4 5 7 9 7 13a7 7 0 1 1-14 0c0-4 3-8 7-13Z" stroke-width="2" stroke-linejoin="round"/></svg>${day.day.daily_chance_of_rain}%</span>
             </div>
         `;
                 });

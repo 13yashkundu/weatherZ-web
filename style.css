@@ -577,6 +577,22 @@ body.theme-snow .weather-bg {
     color: var(--accent-amber);
 }
 
+.fore-rain {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-cool);
+}
+
+.fore-rain svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    fill: none;
+}
+
 /* Major cities table */
 .table-wrapper {
     overflow-x: auto;
