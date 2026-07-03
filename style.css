@@ -12,6 +12,11 @@
     --font-body: 'Inter', sans-serif;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -670,6 +675,7 @@ table.board-table {
 
 .board-table th {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 12px;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -770,6 +776,49 @@ table.board-table {
     .search-box input {
         min-width: 0;
         flex: 1;
+    }
+
+    .brand {
+        font-size: 18px;
+    }
+
+    .city-name {
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .city-time {
+        font-size: 11px;
+    }
+
+    .condition-text {
+        font-size: 14px;
+    }
+
+    .hl-row {
+        font-size: 13px;
+    }
+
+    .section-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .metric-label {
+        font-size: 10px;
+    }
+
+    .metric-value {
+        font-size: 16px;
+    }
+
+    .search-box input {
+        font-size: 14px;
+    }
+
+    .search-box button {
+        font-size: 12px;
+        padding: 10px 16px;
     }
 
     .temp-readout {
