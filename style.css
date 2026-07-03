@@ -479,6 +479,12 @@ body.theme-snow .weather-bg {
     border-top: 1px solid var(--hairline);
 }
 
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 12px;
+}
+
 .metric {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -670,7 +676,8 @@ table.board-table {
         font-size: 76px;
     }
 
-    .metric-row {
+    .metric-row,
+    .highlights-grid {
         grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
         gap: 10px;
     }

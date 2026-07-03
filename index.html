@@ -37,6 +37,11 @@
 
         <section id="currentWeather" aria-live="polite"></section>
 
+        <section class="highlights-section">
+            <h2 id="highlightsTitle" class="section-eyebrow" style="display:none;">Today's Highlights</h2>
+            <div id="highlightsContainer" class="highlights-grid"></div>
+        </section>
+
         <section class="forecast-section">
             <h2 id="forecastTitle" class="section-eyebrow" style="display:none;">3-Day Outlook</h2>
             <div id="forecastContainer" class="forecast-row"></div>
@@ -81,12 +86,21 @@
             return 'cloudy';
         }
 
+        // AQI: WeatherAPI's "us-epa-index" is a 1-6 severity bucket, not a raw
+        // AQI number. Map it to the standard US EPA label people recognize.
+        function getAqiLabel(index) {
+            const labels = ['—', 'Good', 'Moderate', 'Unhealthy*', 'Unhealthy', 'Very Unhealthy', 'Hazardous'];
+            return labels[index] || '—';
+        }
+
         async function getWeather(defaultCity) {
 
             const city = defaultCity || document.getElementById("search-input").value.trim();
             if (!city) return;
 
             const currentDiv = document.getElementById("currentWeather");
+            const highlightsTitle = document.getElementById("highlightsTitle");
+            const highlightsDiv = document.getElementById("highlightsContainer");
             const forecastTitle = document.getElementById("forecastTitle");
             const forecastDiv = document.getElementById("forecastContainer");
             const searchBtn = document.getElementById("search-btn");
@@ -97,13 +111,15 @@
 
             try {
                 const response = await fetch(
-                    `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7`
+                    `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=yes`
                 );
 
                 const data = await response.json();
 
                 if (data.error) {
                     currentDiv.innerHTML = `<p class="error-msg">Invalid city name!</p>`;
+                    highlightsTitle.style.display = "none";
+                    highlightsDiv.innerHTML = "";
                     forecastTitle.style.display = "none";
                     forecastDiv.innerHTML = "";
                     return;
@@ -131,16 +147,6 @@
                     </p>
                 </div>
                 <img src="https:${c.condition.icon.replace('64x64', '128x128')}" alt="${c.condition.text}" class="hero-icon">
-            </div>
-            <div class="astro-row">
-                <span class="astro-item">
-                    <span class="astro-icon"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 5l3-3 3 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span class="astro-text">Sunrise <strong>${data.forecast.forecastday[0].astro.sunrise}</strong></span>
-                </span>
-                <span class="astro-item">
-                    <span class="astro-icon"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 3l3 3 3-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span class="astro-text">Sunset <strong>${data.forecast.forecastday[0].astro.sunset}</strong></span>
-                </span>
             </div>
             <div class="metric-row">
                 <div class="metric">
@@ -173,6 +179,42 @@
         </div>
     `;
 
+                // Today's Highlights
+                highlightsTitle.style.display = "block";
+                const epaIndex = data.current.air_quality ? data.current.air_quality['us-epa-index'] : null;
+                highlightsDiv.innerHTML = `
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0" stroke-width="2" stroke-linecap="round"/><path d="M12 18l3-4" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.2" fill="currentColor"/></svg></span>
+            <span class="metric-label">Pressure</span>
+            <span class="metric-value">${c.pressure_mb} mb</span>
+        </div>
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg></span>
+            <span class="metric-label">Visibility</span>
+            <span class="metric-value">${c.vis_km} km</span>
+        </div>
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke-width="2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="metric-label">UV Index</span>
+            <span class="metric-value">${c.uv}</span>
+        </div>
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="14.5" cy="9" r="1" fill="currentColor"/><circle cx="15" cy="14.5" r="1" fill="currentColor"/><circle cx="9" cy="15" r="1" fill="currentColor"/></svg></span>
+            <span class="metric-label">AQI</span>
+            <span class="metric-value">${epaIndex ? getAqiLabel(epaIndex) : '—'}</span>
+        </div>
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 5l3-3 3 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="metric-label">Sunrise</span>
+            <span class="metric-value">${data.forecast.forecastday[0].astro.sunrise}</span>
+        </div>
+        <div class="metric">
+            <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 3l3 3 3-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="metric-label">Sunset</span>
+            <span class="metric-value">${data.forecast.forecastday[0].astro.sunset}</span>
+        </div>
+    `;
+
                 // Forecast
                 forecastTitle.style.display = "block";
                 forecastDiv.innerHTML = "";
@@ -190,6 +232,8 @@
 
             } catch (err) {
                 currentDiv.innerHTML = `<p class="error-msg">Couldn't reach the weather service. Check your connection and try again.</p>`;
+                highlightsTitle.style.display = "none";
+                highlightsDiv.innerHTML = "";
                 forecastTitle.style.display = "none";
                 forecastDiv.innerHTML = "";
             } finally {
