@@ -61,15 +61,16 @@
 
     </main>
 
-    <!-- <footer class="site-footer">
+    <footer class="site-footer">
         <p>Live data via WeatherAPI.com</p>
-    </footer> -->
+    </footer>
 
     <script>
 
         const API_KEY = "5681555b3ddb46be902105138251911";
         const majorCities = ["Mumbai", "New Delhi", "Bangalore", "Chennai", "Kolkata"];
-        
+
+        // Condition codes: https://www.weatherapi.com/docs/weather_conditions.json
         function getWeatherTheme(code, isDay) {
             if (!isDay) return 'night';
             if (code === 1000) return 'sunny';
@@ -122,16 +123,24 @@
                 <div class="current-left">
                     <p class="city-name"><span class="pin">📍</span>${data.location.name}</p>
                     <span class="temp-readout">${Math.round(c.temp_c)}°C</span>
-                    <p class="condition-text">
-                        <img src="https:${c.condition.icon}" alt="${c.condition.text}" class="inline-icon">
-                        ${c.condition.text}
-                    </p>
+                    <p class="condition-text">${c.condition.text}</p>
                     <p class="hl-row">
                         <span class="hl-high">Today's High: ${Math.round(today.maxtemp_c)}°</span>
                         <span class="hl-divider">·</span>
                         <span class="hl-low">Today's Low: ${Math.round(today.mintemp_c)}°</span>
                     </p>
                 </div>
+                <img src="https:${c.condition.icon.replace('64x64', '128x128')}" alt="${c.condition.text}" class="hero-icon">
+            </div>
+            <div class="astro-row">
+                <span class="astro-item">
+                    <span class="astro-icon"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 5l3-3 3 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="astro-text">Sunrise <strong>${data.forecast.forecastday[0].astro.sunrise}</strong></span>
+                </span>
+                <span class="astro-item">
+                    <span class="astro-icon"><svg viewBox="0 0 24 24"><path d="M2 18h20M5 18a7 7 0 0 1 14 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2v4M9 3l3 3 3-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="astro-text">Sunset <strong>${data.forecast.forecastday[0].astro.sunset}</strong></span>
+                </span>
             </div>
             <div class="metric-row">
                 <div class="metric">
