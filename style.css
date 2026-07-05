@@ -124,14 +124,15 @@ body.theme-night::after {
     overflow: hidden;
 }
 
-/* Sits above the rain layer (z-index 1 vs weather-bg's 0). Stays at
-   opacity 0 until JS adds .flash, which restarts the keyframe animation. */
+/* Sits above the rain layer (z-index 1 vs weather-bg's 0). --flash-x is set
+   by JS per-strike so the glow appears where the bolt actually is, instead
+   of lighting the whole screen evenly like a flashbang. */
 .lightning-flash {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    background: #eaf2ff;
+    background: radial-gradient(ellipse 55% 45% at var(--flash-x, 50%) 0%, rgba(210, 225, 255, 0.6), transparent 70%);
     opacity: 0;
 }
 
@@ -145,18 +146,77 @@ body.theme-night::after {
     }
 
     8% {
-        opacity: 0.85;
+        opacity: 0.7;
     }
 
     18% {
-        opacity: 0.1;
+        opacity: 0.05;
     }
 
     28% {
-        opacity: 0.55;
+        opacity: 0.45;
     }
 
     45% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* The actual bolt: a tall thin box positioned at the strike's x, containing
+   an SVG jagged path (regenerated per-strike in JS). Glow comes from a
+   layered drop-shadow filter, not a blurred background. */
+.lightning-bolt {
+    position: fixed;
+    top: 0;
+    width: 120px;
+    height: 48vh;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+}
+
+.lightning-bolt svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.bolt-path {
+    fill: none;
+    stroke: #f4f8ff;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 4px #cfe0ff) drop-shadow(0 0 16px #9fc0ff);
+}
+
+.lightning-bolt.flash {
+    animation: boltFlicker 0.4s steps(1, end);
+}
+
+@keyframes boltFlicker {
+    0% {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    12% {
+        opacity: 0.15;
+    }
+
+    18% {
+        opacity: 1;
+    }
+
+    28% {
         opacity: 0;
     }
 
