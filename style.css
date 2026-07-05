@@ -266,6 +266,26 @@ body.theme-night::after {
     }
 }
 
+/* Stars don't fall — they stay put and pulse opacity to twinkle. */
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
 /* Ensure content sits above orbs */
 .topbar,
 .main-div,
