@@ -128,7 +128,7 @@
         }
 
         function scheduleLightning() {
-            const delay = 3000 + Math.random() * 6000; // irregular 3-9s gaps, real strikes aren't metronomic
+            const delay = 1500 + Math.random() * 2500; // irregular 1.5-4s gaps, real strikes aren't metronomic
             lightningTimer = setTimeout(() => {
                 triggerLightningFlash();
                 scheduleLightning();
