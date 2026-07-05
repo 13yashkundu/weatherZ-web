@@ -33,7 +33,6 @@ body {
     transition: background 1.2s ease;
 }
 
-/* ── Weather themes ── */
 body.theme-sunny {
     background: radial-gradient(circle at 40% -10%, #7c2d12 0%, #1c0900 50%, #0a0400 100%);
 }
@@ -54,7 +53,6 @@ body.theme-cloudy {
     background: radial-gradient(circle at 50% -10%, #1b2848 0%, #0b1220 55%, #060a14 100%);
 }
 
-/* Background orbs — base */
 body::before,
 body::after {
     content: '';
@@ -82,7 +80,6 @@ body::after {
     right: -80px;
 }
 
-/* Orb overrides per theme */
 body.theme-sunny::before {
     background: rgba(251, 146, 60, 0.20);
 }
@@ -115,7 +112,6 @@ body.theme-night::after {
     background: rgba(56, 72, 160, 0.08);
 }
 
-/* ── Rain & snow animation overlay ── */
 .weather-bg {
     position: fixed;
     inset: 0;
@@ -124,9 +120,6 @@ body.theme-night::after {
     overflow: hidden;
 }
 
-/* Sits above the rain layer (z-index 1 vs weather-bg's 0). --flash-x is set
-   by JS per-strike so the glow appears where the bolt actually is, instead
-   of lighting the whole screen evenly like a flashbang. */
 .lightning-flash {
     position: fixed;
     inset: 0;
@@ -166,9 +159,6 @@ body.theme-night::after {
     }
 }
 
-/* The actual bolt: a tall thin box positioned at the strike's x, containing
-   an SVG jagged path (regenerated per-strike in JS). Glow comes from a
-   layered drop-shadow filter, not a blurred background. */
 .lightning-bolt {
     position: fixed;
     top: 0;
@@ -225,10 +215,6 @@ body.theme-night::after {
     }
 }
 
-/* Each .raindrop / .snowflake is a real individual element (spawned by JS in
-   index.html, not a repeating background pattern) that falls from top to
-   bottom via translateY. This is what actually reads as "drops falling"
-   instead of a static texture. */
 .raindrop {
     position: absolute;
     top: -40px;
@@ -266,7 +252,6 @@ body.theme-night::after {
     }
 }
 
-/* Stars don't fall — they stay put and pulse opacity to twinkle. */
 .star {
     position: absolute;
     border-radius: 50%;
@@ -285,8 +270,6 @@ body.theme-night::after {
         opacity: 1;
     }
 }
-
-/* Ensure content sits above orbs */
 .topbar,
 .main-div,
 .site-footer {
@@ -294,7 +277,6 @@ body.theme-night::after {
     z-index: 1;
 }
 
-/* Top bar */
 .topbar {
     background: rgba(20, 27, 46, 0.75);
     backdrop-filter: blur(12px);
@@ -330,9 +312,6 @@ body.theme-night::after {
     gap: 10px;
 }
 
-/* .search-wrapper holds input+button as one visual unit.
-   overflow: hidden clips the square inner corners to the wrapper's
-   own border-radius, so input/button just need border-radius: 0. */
 .search-wrapper {
     position: relative;
     display: flex;
@@ -344,10 +323,6 @@ body.theme-night::after {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* :focus-within = "apply this style to the parent if ANY child inside
-   it currently has focus." Regular :focus only works on the element
-   itself, so it can't react to the child input being focused —
-   that's the only way to make the whole pill glow at once. */
 .search-wrapper:focus-within {
     border-color: var(--accent-amber-light);
     box-shadow: 0 0 0 3px rgba(255, 200, 102, 0.2);
@@ -387,10 +362,6 @@ body.theme-night::after {
 .search-box input::placeholder {
     color: var(--text-muted);
 }
-
-/* Removed outline on focus-visible here — the wrapper's :focus-within
-   box-shadow is now the only focus indicator, otherwise you'd get
-   two competing outlines (double ring) at once. */
 
 .site-footer {
     text-align: center;
@@ -454,8 +425,6 @@ body.theme-night::after {
     text-align: center;
 }
 
-/* Fade sequence: swapWithFade() toggles this class before/after
-   swapping innerHTML. Duration here must match the 250ms in JS. */
 #currentWeather {
     transition: opacity 0.25s ease;
 }
