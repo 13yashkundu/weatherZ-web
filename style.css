@@ -124,6 +124,47 @@ body.theme-night::after {
     overflow: hidden;
 }
 
+/* Sits above the rain layer (z-index 1 vs weather-bg's 0). Stays at
+   opacity 0 until JS adds .flash, which restarts the keyframe animation. */
+.lightning-flash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: #eaf2ff;
+    opacity: 0;
+}
+
+.lightning-flash.flash {
+    animation: lightningStrike 0.4s ease-out;
+}
+
+@keyframes lightningStrike {
+    0% {
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.85;
+    }
+
+    18% {
+        opacity: 0.1;
+    }
+
+    28% {
+        opacity: 0.55;
+    }
+
+    45% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 /* Each .raindrop / .snowflake is a real individual element (spawned by JS in
    index.html, not a repeating background pattern) that falls from top to
    bottom via translateY. This is what actually reads as "drops falling"

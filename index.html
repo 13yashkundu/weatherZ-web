@@ -17,6 +17,7 @@
 
 <body>
     <div id="weather-bg" class="weather-bg"></div>
+    <div id="lightning-flash" class="lightning-flash"></div>
 
     <header class="topbar">
         <div class="topbar-inner">
@@ -84,6 +85,29 @@
             if (!isDay) return 'night';
             if (code === 1000) return 'sunny';
             return 'cloudy';
+        }
+
+        // Separate from rainCodes on purpose — plain rain/drizzle should never
+        // flash lightning, only actual thunderstorm condition codes.
+        const thunderCodes = [1087, 1273, 1276, 1279, 1282];
+        let lightningTimer = null;
+
+        function triggerLightningFlash(el) {
+            el.classList.remove('flash');
+            void el.offsetWidth; // force reflow so removing+re-adding the class actually restarts the CSS animation
+            el.classList.add('flash');
+        }
+
+        function scheduleLightning(el) {
+            const delay = 3000 + Math.random() * 6000; // irregular 3-9s gaps, real strikes aren't metronomic
+            lightningTimer = setTimeout(() => {
+                triggerLightningFlash(el);
+                scheduleLightning(el);
+            }, delay);
+        }
+
+        function stopLightning() {
+            clearTimeout(lightningTimer);
         }
 
         // Spawns real DOM elements that fall via CSS animation — not a
@@ -204,6 +228,8 @@
                     highlightsDiv.innerHTML = "";
                     forecastTitle.style.display = "none";
                     forecastDiv.innerHTML = "";
+                    stopLightning();
+                    document.getElementById('weather-bg').innerHTML = "";
                     return;
                 }
 
@@ -219,6 +245,11 @@
                 const weatherTheme = getWeatherTheme(c.condition.code, c.is_day);
                 document.body.className = 'theme-' + weatherTheme;
                 spawnWeatherParticles(weatherTheme);
+
+                stopLightning();
+                if (thunderCodes.includes(c.condition.code)) {
+                    scheduleLightning(document.getElementById('lightning-flash'));
+                }
 
                 const today = data.forecast.forecastday[0].day;
 
@@ -334,6 +365,8 @@
                 highlightsDiv.innerHTML = "";
                 forecastTitle.style.display = "none";
                 forecastDiv.innerHTML = "";
+                stopLightning();
+                document.getElementById('weather-bg').innerHTML = "";
             } finally {
                 searchBtn.disabled = false;
                 searchBtn.textContent = "Search";
