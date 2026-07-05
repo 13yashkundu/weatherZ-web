@@ -399,10 +399,10 @@ body.theme-night::after {
 
 .city-name {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
-    letter-spacing: 1.5px;
-    color: var(--text-muted);
+    letter-spacing: 1px;
+    color: var(--text-primary);
     margin: 0;
     text-transform: uppercase;
 }
@@ -789,8 +789,8 @@ table.board-table {
     }
 
     .city-name {
-        font-size: 13px;
-        letter-spacing: 1px;
+        font-size: 16px;
+        letter-spacing: 0.5px;
     }
 
     .city-time {
