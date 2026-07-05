@@ -108,7 +108,7 @@ body.theme-snow::after {
 }
 
 body.theme-night::before {
-    background: rgba(99, 102, 241, 0.10);
+    background: rgba(31, 32, 77, 0.18);
 }
 
 body.theme-night::after {
