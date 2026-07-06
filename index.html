@@ -88,9 +88,9 @@
             return 'cloudy';
         }
 
-        // Separate from rainCodes on purpose — plain rain/drizzle should never
-        // flash lightning, only actual thunderstorm condition codes.
-        const thunderCodes = [1087, 1273, 1276, 1279, 1282];
+        // Split by intensity, not by "has thunder in the name" — heavy rain
+        // gets lightning, light rain/drizzle gets nothing.
+        const heavyRainCodes = [1192, 1195, 1201, 1243, 1246, 1276];
         let lightningTimer = null;
 
         // Builds a jagged zigzag SVG path each time — a real bolt is never
@@ -290,7 +290,7 @@
                 spawnWeatherParticles(weatherTheme);
 
                 stopLightning();
-                if (thunderCodes.includes(c.condition.code)) {
+                if (heavyRainCodes.includes(c.condition.code)) {
                     scheduleLightning();
                 }
 
