@@ -87,15 +87,8 @@
             if (code === 1000) return 'sunny';
             return 'cloudy';
         }
-
-        // Split by intensity, not by "has thunder in the name" — heavy rain
-        // gets lightning, light rain/drizzle gets nothing.
         const heavyRainCodes = [1192, 1195, 1201, 1243, 1246, 1276];
         let lightningTimer = null;
-
-        // Builds a jagged zigzag SVG path each time — a real bolt is never
-        // a straight line. Random x-jitter per segment is what makes it look
-        // like electricity instead of a drawn arrow.
         function generateBoltSVG() {
             let x = 30, y = 0;
             let d = `M ${x} 0 `;
@@ -112,14 +105,12 @@
         function triggerLightningFlash() {
             const flashEl = document.getElementById('lightning-flash');
             const boltEl = document.getElementById('lightning-bolt');
-            const xPos = 15 + Math.random() * 70; // % across the screen — strike location varies each time
+            const xPos = 15 + Math.random() * 70; 
 
             flashEl.style.setProperty('--flash-x', xPos + '%');
             boltEl.style.left = xPos + '%';
             boltEl.innerHTML = generateBoltSVG();
 
-            // classList remove+reflow+add restarts the CSS animation even
-            // though the class name didn't change between strikes.
             flashEl.classList.remove('flash');
             boltEl.classList.remove('flash');
             void flashEl.offsetWidth;
@@ -139,11 +130,6 @@
             clearTimeout(lightningTimer);
         }
 
-        // Spawns real DOM elements that fall via CSS animation — not a
-        // repeating background pattern. negative animation-delay is the key
-        // trick: it makes the animation start mid-cycle immediately, so drops
-        // are already staggered across the screen on the very first frame
-        // instead of all starting together at the top.
         function spawnWeatherParticles(theme) {
             const container = document.getElementById('weather-bg');
             container.innerHTML = '';
@@ -227,10 +213,7 @@
             </div>
         </div>
     `;
-
-        // WeatherAPI gives wind_dir as a compass abbreviation (e.g. "WSW").
-        // This maps it to the full name for a hover tooltip only — the
-        // visible text stays abbreviated so the compact card layout doesn't break.
+    
         const windDirNames = {
             N: 'North', NNE: 'North-Northeast', NE: 'Northeast', ENE: 'East-Northeast',
             E: 'East', ESE: 'East-Southeast', SE: 'Southeast', SSE: 'South-Southeast',
